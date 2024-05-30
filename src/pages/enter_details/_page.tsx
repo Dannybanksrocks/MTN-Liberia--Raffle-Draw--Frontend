@@ -12,7 +12,7 @@ import {
 
 const EnterDetails = () => {
   const [isSpinDone, setSpinDone] = React.useState<boolean>(false);
-  const [selectedDuration, setSelectedDurarion] = React.useState<any>(null);
+  // const [selectedDuration, setSelectedDurarion] = React.useState<any>(null);
   const [winner, setWinner] = React.useState<any[]>([]);
   const [fileName, setFileName] = React.useState<any>();
 
@@ -81,7 +81,7 @@ const EnterDetails = () => {
         <div className="w-1/3 mt-3">
           <Select
             options={durationOptions}
-            value={selectedDuration}
+            // value={selectedDuration}
             placeholder="Select Duration For Spin"
           />
         </div>

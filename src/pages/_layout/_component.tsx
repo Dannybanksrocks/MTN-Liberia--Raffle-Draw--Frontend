@@ -6,21 +6,21 @@ import { Modal } from "../../components/modal/_component";
 import { Icons, Images } from "../../Assets";
 
 export const PageLayout = () => {
-  const [selectedMenu, setSelectedMenu] = useState(0);
+   const [selectedMenu] = useState(0);
   const [activeLink, setActiveLink] = useState("");
   const [isDeactivateModalOpen, setIsDeactivateModalOpen] =
     React.useState<boolean>(false);
 
-  const onMenuClick = (
-    e: any,
-    selected: number,
-    url: string,
-    submenu: any[]
-  ) => {
-    console.log(url, submenu);
-    e.preventDefault();
-    setSelectedMenu(selected);
-  };
+  // const onMenuClick = (
+  //   e: any,
+  //   selected: number,
+  //   url: string,
+  //   submenu: any[]
+  // ) => {
+  //   console.log(url, submenu);
+  //   e.preventDefault();
+  //   setSelectedMenu(selected);
+  // };
 
   const openDeactivationModal = () => {
     setIsDeactivateModalOpen(true);
