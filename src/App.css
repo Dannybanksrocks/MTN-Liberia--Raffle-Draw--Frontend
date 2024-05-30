@@ -1,0 +1,80 @@
+@keyframes fireworks {
+  0% {
+    transform: translateY(0) rotateZ(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-1000px) rotateZ(360deg);
+    opacity: 0;
+  }
+}
+
+.fireworks-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.firework {
+  position: absolute;
+  width: 10px;
+  height: 20px;
+  background-color: #f00;
+  border-radius: 50%;
+  animation: fireworks 2s linear infinite;
+}
+
+.firework:nth-child(2) {
+  left: 25%;
+  animation-delay: 0.5s;
+}
+
+.firework:nth-child(3) {
+  left: 50%;
+  animation-delay: 1s;
+}
+
+/* Add more styles and keyframes as needed */
+#animated-counter::after {
+  font: 800 40px system-ui;
+  content: counter(count);
+  animation: counter 0.3s linear infinite alternate;
+  counter-reset: count 0;
+}
+
+@keyframes counter {
+  0% {
+    counter-increment: count 0243312201;
+  }
+  10% {
+    counter-increment: count 0240177497;
+  }
+  20% {
+    counter-increment: count 0541550252;
+  }
+  30% {
+    counter-increment: count 0201234567;
+  }
+  40% {
+    counter-increment: count 0231456983;
+  }
+  50% {
+    counter-increment: count 1234567893;
+  }
+  60% {
+    counter-increment: count 0506068327;
+  }
+  70% {
+    counter-increment: count 0243312201;
+  }
+  80% {
+    counter-increment: count 0565870288;
+  }
+  90% {
+    counter-increment: count 0243312201;
+  }
+  100% {
+    counter-increment: count 0201234567;
+  }
+}
