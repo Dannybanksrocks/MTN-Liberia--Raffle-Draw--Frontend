@@ -5,7 +5,6 @@ import { drawCaseOptions, durationOptions } from "../../data";
 import { MtnButton } from "../../components/button/MtnButton";
 import Confetti from "react-confetti";
 import * as XLSX from "xlsx";
-import Papa from "papaparse"; // Import PapaParse for CSV parsing
 import {
   addAnimatedNumberShow,
   removeAnimatedNumberShow,
@@ -15,11 +14,12 @@ import { showToast } from "../../core/hooks/alert_hook";
 const EnterDetails = () => {
   const [isSpinDone, setSpinDone] = React.useState<boolean>(false);
   const [spinDuration, setSpinDuration] = React.useState<number>();
-  const [selectedDuration, setSelectedDuration] = React.useState<any>(null);
-  const [selectedDrawCase, setSelectedDrawCase] = React.useState<string>("");
-  const [selectedDrawCaseValue, setSelectedDrawCaseValue] = React.useState<any>(null);
-  const [winner, setWinner] = React.useState<string>("");
-  const [fileName, setFileName] = React.useState<string>("");
+  const [selectedDuration, setSelectedDurarion] = React.useState(null);
+  const [selectedDrawCase, setSelectedDrawCase] = React.useState("");
+  const [selectedDrawCaseValue, setSelectedDrawCaseValue] =
+    React.useState<any>(null);
+  const [winner, setWinner] = React.useState<any[]>([]);
+  const [fileName, setFileName] = React.useState<any>();
 
   React.useEffect(() => {
     removeAnimatedNumberShow();
@@ -51,62 +51,44 @@ const EnterDetails = () => {
   const handleDrawCaseDuration = (selectedOption: any) => {
     setSelectedDrawCase(selectedOption.value);
     setSelectedDrawCaseValue(selectedOption);
+
+    console.log("bab", selectedDrawCase);
   };
 
-  const handleDurationChange = (selectedOption: any) => {
-    setSelectedDuration(selectedOption);
-    const convertedStringToNumber = Number(selectedOption.value);
+  const handlDurationChange = (selectedOption: any) => {
+    setSelectedDurarion(selectedOption);
+    console.log("sel: ", typeof selectedOption.value);
+
+    let convertedStringToNumber = Number(selectedOption.value);
+    console.log("convertedStringToNumber: ", convertedStringToNumber);
     setSpinDuration(convertedStringToNumber);
   };
 
-  const handleInputOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
     if (file) setFileName(file.name);
     if (file) {
-      const fileType = file.name.split(".").pop()?.toLowerCase();
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target && event.target.result) {
+          const data = new Uint8Array(event.target.result as ArrayBuffer);
+          const workbook = XLSX.read(data, { type: "array" });
+          const firstSheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[firstSheetName];
+          const excelData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-      const handleExcelFile = (file: File) => {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          if (event.target && event.target.result) {
-            const data = new Uint8Array(event.target.result as ArrayBuffer);
-            const workbook = XLSX.read(data, { type: "array" });
-            const firstSheetName = workbook.SheetNames[0];
-            const worksheet = workbook.Sheets[firstSheetName];
-            const excelData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-
-            let selectedArrayFromData: any = excelData[0];
-            const stringifiedArray = selectedArrayFromData.map(String);
-            const randomSelection = Math.floor(Math.random() * stringifiedArray.length);
-            setWinner(stringifiedArray[randomSelection]);
-          }
-        };
-        reader.readAsArrayBuffer(file);
+          let selectedArrayFromData: any = excelData[0];
+          const stringifiedArray = selectedArrayFromData.map(String);
+          console.log("stringifiedArray: ", stringifiedArray);
+          const randomSelection = Math.floor(
+            Math.random() * stringifiedArray.length
+          );
+          // const me = setUploadedMsisdns(randomSelection, stringifiedArray[randomSelection])
+          console.log(stringifiedArray[randomSelection]);
+          setWinner(stringifiedArray[randomSelection]);
+        }
       };
-
-      const handleCSVFile = (file: File) => {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          if (event.target && event.target.result) {
-            const csvData = Papa.parse(event.target.result as string, {
-              header: false,
-            }).data;
-            let selectedArrayFromData: any = csvData[0];
-            const stringifiedArray = selectedArrayFromData.map(String);
-            const randomSelection = Math.floor(Math.random() * stringifiedArray.length);
-            setWinner(stringifiedArray[randomSelection]);
-          }
-        };
-        reader.readAsText(file);
-      };
-
-      if (fileType === "xlsx") {
-        handleExcelFile(file);
-      } else if (fileType === "csv") {
-        handleCSVFile(file);
-      } else {
-        showToast("Unsupported file format. Please upload XLSX or CSV file.", false);
-      }
+      reader.readAsArrayBuffer(file);
     }
   };
 
@@ -117,6 +99,20 @@ const EnterDetails = () => {
   return (
     <>
       <div className="flex flex-col">
+        {/* <div className="flex items-center mt-3">
+          <span className="mr-3 text-sm font-medium text-black">
+            Turn on if you'd want to upload from a file
+          </span>
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              checked={toggleIsChecked}
+              onChange={handleCheckboxChange}
+              className="sr-only peer"
+            />
+            <div className="w-11 h-6 bg-gray-200 dark:peer-focus:ring-[#ffcc00] rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#ffcc00]"></div>
+          </label>
+        </div> */}
         {isSpinDone && (
           <h1 className="mt-3 text-6xl font-bold text-green-800 animate-pulse">
             WINNER: {winner}
@@ -134,7 +130,7 @@ const EnterDetails = () => {
             <Select
               options={durationOptions}
               value={selectedDuration}
-              onChange={handleDurationChange}
+              onChange={handlDurationChange}
               placeholder="Select Duration For Spin"
             />
           </div>
@@ -147,6 +143,16 @@ const EnterDetails = () => {
               placeholder="Select Draw Case"
             />
           </div>
+          {/* {selectedDrawCase === "M" && (
+            <div className="w-1/3 mt-3">
+              <Select
+                options={drawCaseOptions}
+                value={selectedDrawCaseValue}
+                onChange={handleDrawCaseDuration}
+                placeholder="Select Number of Winners"
+              />
+            </div>
+          )} */}
         </div>
       </div>
 
@@ -160,10 +166,10 @@ const EnterDetails = () => {
             <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
               <span className="font-semibold">Click to upload</span>
             </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400">XLSX or CSV</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">XLSX</p>
           </div>
           <input
-            onChange={(e) => handleInputOnChange(e)}
+            onChange={(e) => handleInputOnchange(e)}
             id="dropzone-file"
             type="file"
             className="hidden"

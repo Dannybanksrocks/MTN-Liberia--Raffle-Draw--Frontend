@@ -1,3 +1,4 @@
+import React from "react";
 import { FaPhone } from "react-icons/fa6";
 
 export const menus = [
@@ -38,5 +39,3 @@ export const numberOfWinnerOptions = [
   { value: "4", label: "4 winners" },
   { value: "5", label: "5 winners" },
 ];
-
-
