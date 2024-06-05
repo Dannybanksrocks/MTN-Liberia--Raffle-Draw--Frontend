@@ -12,6 +12,14 @@ export const Login = () => {
     setPasswordType(!showPasswordType);
   };
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true); 
+    setTimeout(() => {
+      setIsLoading(false); 
+    }, 2000);
+  };
+
   return (
     <>
       <div className="flex">
@@ -39,7 +47,7 @@ export const Login = () => {
                 </h3>
               </div>
 
-              <form className="w-full">
+              <form className="w-full" onSubmit={handleSubmit}>
                 <label>Phone number</label>
                 <div
                   className="relative mb-3 border"
@@ -82,10 +90,9 @@ export const Login = () => {
                 </div>
                 <MtnButton
                   className="w-full py-2 text-white bg-black form-wizard-submit disabled:bg-gray-200 disabled:shadow-none lg:px-20"
-                  // disabled={isLoading}
-                  // loading={isLoading}
-                  type={"submit"}
-                  label={"Login"}
+                  disabled={isLoading} // Disable button when loading
+                  type="submit"
+                  label={isLoading ? "Logging in..." : "Login"} // Change button label based on loading state
                 />
               </form>
             </div>

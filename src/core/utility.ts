@@ -5,5 +5,19 @@ export function countUp(
   element: HTMLElement
 ): void {
   let current = start;
-  const increment = Math.ceil((end - start) / (duration / 60)); // Adjust the speed by changing the divisor
+  const increment = Math.ceil((end - start) / (duration / 60));
+
+  const step = () => {
+    current += increment;
+    if (current >= end) {
+      current = end;
+    }
+    element.innerText = current.toString();
+
+    if (current < end) {
+      window.requestAnimationFrame(step);
+    }
+  };
+
+  step();
 }
