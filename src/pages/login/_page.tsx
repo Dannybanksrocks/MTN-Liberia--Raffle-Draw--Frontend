@@ -5,7 +5,6 @@ import { Images } from "../../Assets";
 import { MtnButton } from "../../components/button/MtnButton";
 
 export const Login = () => {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [showPasswordType, setPasswordType] = React.useState<boolean>(false);
 
   const passwordToggle = () => {
@@ -82,8 +81,6 @@ export const Login = () => {
                 </div>
                 <MtnButton
                   className="w-full py-2 text-white bg-black form-wizard-submit disabled:bg-gray-200 disabled:shadow-none lg:px-20"
-                  // disabled={isLoading}
-                  // loading={isLoading}
                   type={"submit"}
                   label={"Login"}
                 />

@@ -1,4 +1,3 @@
-import React from "react";
 import { FaPhone } from "react-icons/fa6";
 
 export const menus = [
@@ -10,12 +9,7 @@ export const menus = [
         group: "Upload",
         icon: <FaPhone />,
       },
-      // {
-      //   title: "Spin for winner",
-      //   url: "/spin",
-      //   group: "Get winner",
-      //   icon: <ImSpinner9 />,
-      // },
+      
     ],
   },
 ];
