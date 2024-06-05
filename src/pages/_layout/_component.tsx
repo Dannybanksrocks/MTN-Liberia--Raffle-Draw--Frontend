@@ -6,21 +6,10 @@ import { Modal } from "../../components/modal/_component";
 import { Icons, Images } from "../../Assets";
 
 export const PageLayout = () => {
-   const [selectedMenu] = useState(0);
+  const [selectedMenu] = useState(0);
   const [activeLink, setActiveLink] = useState("");
   const [isDeactivateModalOpen, setIsDeactivateModalOpen] =
     React.useState<boolean>(false);
-
-  // const onMenuClick = (
-  //   e: any,
-  //   selected: number,
-  //   url: string,
-  //   submenu: any[]
-  // ) => {
-  //   console.log(url, submenu);
-  //   e.preventDefault();
-  //   setSelectedMenu(selected);
-  // };
 
   const openDeactivationModal = () => {
     setIsDeactivateModalOpen(true);
@@ -32,7 +21,7 @@ export const PageLayout = () => {
 
   const groupMenus = (entries: any[]): { group: string; items: any[] }[] => {
     return Object.values(
-      entries.reduce((result: any[], item) => {
+      entries.reduce((result: any, item) => {
         const key = item.group;
         if (!result[key]) {
           result[key] = { group: key, items: [] };
@@ -55,7 +44,7 @@ export const PageLayout = () => {
           <ul className="sub-nav">
             {(
               groupMenus(
-                menus.find((_: any, k: any) => k == selectedMenu)!.submenu
+                menus.find((_: any, k: any) => k === selectedMenu)!.submenu
               ) ?? []
             ).map(({ group, items }, k) => (
               <React.Fragment key={k}>
